@@ -1,4 +1,5 @@
-
+import javafx.util.Pair;
+import java.awt.Point;
 /**
  * Write a description of class Cactus here.
  *
@@ -19,15 +20,14 @@ public class Cactus extends Obstacle
         x = 0;
     }
 
-    /**
-     * An example of a method - replace this comment with your own
-     *
-     * @param  y  a sample parameter for a method
-     * @return    the sum of x and y
-     */
-    public int sampleMethod(int y)
-    {
-        // put your code here
-        return x + y;
+    @Override
+    public void start(){}
+    @Override
+    public void spawn(){}
+    @Override
+    public void move(){}
+    @Override
+    public Pair<Point,Point> getBoundingBox(){
+        return null;
     }
 }

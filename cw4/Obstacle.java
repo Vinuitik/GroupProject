@@ -1,3 +1,5 @@
+import javafx.util.Pair;
+import java.awt.Point;
 
 /**
  * Write a description of class Obstacle here.
@@ -5,7 +7,7 @@
  * @author (your name)
  * @version (a version number or a date)
  */
-public class Obstacle
+public abstract class Obstacle
 {
     // instance variables - replace the example below with your own
     private int x;
@@ -15,19 +17,10 @@ public class Obstacle
      */
     public Obstacle()
     {
-        // initialise instance variables
-        x = 0;
     }
 
-    /**
-     * An example of a method - replace this comment with your own
-     *
-     * @param  y  a sample parameter for a method
-     * @return    the sum of x and y
-     */
-    public int sampleMethod(int y)
-    {
-        // put your code here
-        return x + y;
-    }
+    protected abstract void start();
+    protected abstract void spawn();
+    protected abstract void move();
+    protected abstract Pair<Point,Point> getBoundingBox();
 }
