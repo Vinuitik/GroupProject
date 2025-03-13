@@ -103,7 +103,7 @@ public class GameGraphics extends Application {
         Circle body = new Circle(0, 0, 10);
         body.setFill(Color.DODGERBLUE);
 
-        // Крыло – многоугольник белого цвета, для примера
+        // Крыло – многоугольник белого цвета
         Polygon wing = new Polygon(
             -5.0, 0.0,
             -10.0, -5.0,
