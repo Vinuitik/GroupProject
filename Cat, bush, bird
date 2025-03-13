@@ -1,0 +1,117 @@
+import javafx.application.Application;
+import javafx.scene.Group;
+import javafx.scene.Scene;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Circle;
+import javafx.scene.shape.Polygon;
+import javafx.scene.shape.Rectangle;
+import javafx.stage.Stage;
+
+public class GameGraphics extends Application {
+
+    public static void main(String[] args) {
+        launch(args);
+    }
+
+    @Override
+    public void start(Stage primaryStage) {
+        Group root = new Group();
+
+        // Создаем и размещаем котёнка
+        Group kitten = createKitten();
+        kitten.setLayoutX(100);
+        kitten.setLayoutY(200);
+        root.getChildren().add(kitten);
+
+        // Создаем и размещаем куст
+        Group bush = createBush();
+        bush.setLayoutX(300);
+        bush.setLayoutY(250);
+        root.getChildren().add(bush);
+
+        // Создаем и размещаем птичку
+        Group bird = createBird();
+        bird.setLayoutX(450);
+        bird.setLayoutY(100);
+        root.getChildren().add(bird);
+
+        Scene scene = new Scene(root, 600, 400, Color.LIGHTBLUE);
+        primaryStage.setScene(scene);
+        primaryStage.setTitle("Пример векторной графики");
+        primaryStage.show();
+    }
+
+    // Метод для создания котёнка
+    private Group createKitten() {
+        Group kitten = new Group();
+
+        // Тело котёнка – прямоугольник с закругленными углами
+        Rectangle body = new Rectangle(0, 0, 50, 30);
+        body.setArcWidth(20);
+        body.setArcHeight(20);
+        // Светло-коричневый цвет тела (подходит для «рыжего» тона)
+        body.setFill(Color.SANDYBROWN);
+
+        // Голова – круг, смещенный относительно тела
+        Circle head = new Circle(25, -15, 15);
+        head.setFill(Color.SANDYBROWN);
+
+        // Ушки – два треугольника (многоугольники) с темно-коричневым цветом
+        Polygon earLeft = new Polygon(
+            15.0, -30.0,
+            10.0, -15.0,
+            20.0, -15.0
+        );
+        earLeft.setFill(Color.BROWN);
+
+        Polygon earRight = new Polygon(
+            35.0, -30.0,
+            30.0, -15.0,
+            40.0, -15.0
+        );
+        earRight.setFill(Color.BROWN);
+
+        // Глаза – маленькие черные круги
+        Circle eyeLeft = new Circle(20, -17, 2);
+        eyeLeft.setFill(Color.BLACK);
+        Circle eyeRight = new Circle(30, -17, 2);
+        eyeRight.setFill(Color.BLACK);
+
+        kitten.getChildren().addAll(body, head, earLeft, earRight, eyeLeft, eyeRight);
+        return kitten;
+    }
+
+    // Метод для создания куста
+    private Group createBush() {
+        Group bush = new Group();
+        // Для куста используем несколько кругов, чтобы создать эффект "густых" листьев
+        Circle leaf1 = new Circle(20, 20, 20);
+        leaf1.setFill(Color.GREEN);
+        Circle leaf2 = new Circle(40, 20, 20);
+        leaf2.setFill(Color.GREEN);
+        Circle leaf3 = new Circle(30, 0, 20);
+        leaf3.setFill(Color.GREEN);
+
+        bush.getChildren().addAll(leaf1, leaf2, leaf3);
+        return bush;
+    }
+
+    // Метод для создания птички
+    private Group createBird() {
+        Group bird = new Group();
+        // Тело птички – круг синего цвета
+        Circle body = new Circle(0, 0, 10);
+        body.setFill(Color.DODGERBLUE);
+
+        // Крыло – многоугольник белого цвета, для примера
+        Polygon wing = new Polygon(
+            -5.0, 0.0,
+            -10.0, -5.0,
+            -2.0, -3.0
+        );
+        wing.setFill(Color.WHITE);
+
+        bird.getChildren().addAll(body, wing);
+        return bird;
+    }
+}
