@@ -1,15 +1,7 @@
-import javafx.util.Pair;
-import java.awt.Point;
+import javafx.scene.Group;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
-/**
- * Write a description of class Cactus here.
- *
- * @author (your name)
- * @version (a version number or a date)
- */
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Circle;
+import javafx.scene.shape.Rectangle;
 
 /**
  * Bush/Cactus obstacle class for the Dinosaur Game
@@ -20,7 +12,7 @@ import javafx.scene.shape.Circle;
 public class Bush extends Obstacle {
     private double speed;
     private int type; // 0 = small, 1 = medium, 2 = large
-    
+
     /**
      * Constructor for the Bush class
      */
@@ -30,7 +22,7 @@ public class Bush extends Obstacle {
         this.speed = 3.0;
         initialize();
     }
-    
+
     /**
      * Constructor with custom position and type
      * @param startX Starting X position
@@ -45,7 +37,7 @@ public class Bush extends Obstacle {
         setX(startX);
         setY(startY);
     }
-    
+
     /**
      * Initialize the bush/cactus
      */
@@ -53,112 +45,83 @@ public class Bush extends Obstacle {
     public void initialize() {
         buildBush();
     }
-    
+
     /**
      * Build the bush/cactus graphics based on type
      */
     private void buildBush() {
-        // Clear any existing children
-        obstacleGroup.getChildren().clear();
-        
-        switch (type) {
-            case 0: // Small cactus
-                createSmallCactus();
-                this.width = 40;
-                this.height = 40;
-                break;
-            case 1: // Medium cactus (taller)
-                createMediumCactus();
-                this.width = 30;
-                this.height = 60;
-                break;
-            case 2: // Large cactus (wider)
-                createLargeCactus();
-                this.width = 80;
-                this.height = 40;
-                break;
-            default:
-                createSmallCactus();
-                this.width = 40;
-                this.height = 40;
-        }
-        
-        // Set default position (will be overridden when placed in game)
-        this.x = 600;
-        this.y = 250; // Adjust to match ground level in your game
+        // Bush Stem
+        Rectangle stem = new Rectangle(-5, 0, 10, 30);
+        stem.setFill(Color.SADDLEBROWN);
+
+        // Main bush parts
+        Circle base = new Circle(0, 0, 25);
+        base.setFill(Color.FORESTGREEN);
+
+        Circle leftSide = new Circle(-18, -5, 20);
+        leftSide.setFill(Color.FORESTGREEN);
+
+        Circle rightSide = new Circle(18, -5, 20);
+        rightSide.setFill(Color.FORESTGREEN);
+
+        Circle top = new Circle(0, -20, 18);
+        top.setFill(Color.FORESTGREEN);
+
+        // Highlights
+        Circle highlight1 = new Circle(-12, -12, 8);
+        highlight1.setFill(Color.LIMEGREEN);
+
+        Circle highlight2 = new Circle(12, -12, 10);
+        highlight2.setFill(Color.LIMEGREEN);
+
+        Circle highlight3 = new Circle(0, -5, 7);
+        highlight3.setFill(Color.LIMEGREEN);
+
+        // Flowers
+        Circle flower1 = new Circle(-15, -20, 5);
+        flower1.setFill(Color.PINK);
+
+        Circle flower2 = new Circle(15, -25, 4);
+        flower2.setFill(Color.YELLOW);
+
+        Circle flower3 = new Circle(5, -30, 3);
+        flower3.setFill(Color.LIGHTSKYBLUE);
+
+        // Flower centers
+        Circle flowerCenter1 = new Circle(-15, -20, 2);
+        flowerCenter1.setFill(Color.YELLOW);
+
+        Circle flowerCenter2 = new Circle(15, -25, 1.5);
+        flowerCenter2.setFill(Color.ORANGE);
+
+        Circle flowerCenter3 = new Circle(5, -30, 1);
+        flowerCenter3.setFill(Color.WHITE);
+
+        // Add elements to the group
+        obstacleGroup.getChildren().addAll(
+            stem, base, leftSide, rightSide, top, 
+            highlight1, highlight2, highlight3,
+            flower1, flower2, flower3,
+            flowerCenter1, flowerCenter2, flowerCenter3
+        );
+
+        // Initial position
+        this.x = 100; // off-screen right
+        this.y = 250; // ground level
         obstacleGroup.setLayoutX(x);
         obstacleGroup.setLayoutY(y);
     }
-    
-    /**
-     * Create a small cactus
-     */
-    private void createSmallCactus() {
-        Circle leaf1 = new Circle(0, 0, 20);
-        Circle leaf2 = new Circle(20, 0, 20);
-        Circle leaf3 = new Circle(10, -20, 20);
-        
-        leaf1.setFill(Color.GREEN);
-        leaf2.setFill(Color.GREEN);
-        leaf3.setFill(Color.GREEN);
-        
-        leaf1.setStroke(Color.DARKGREEN);
-        leaf2.setStroke(Color.DARKGREEN);
-        leaf3.setStroke(Color.DARKGREEN);
-        
-        obstacleGroup.getChildren().addAll(leaf1, leaf2, leaf3);
-    }
-    
-    /**
-     * Create a medium (taller) cactus
-     */
-    private void createMediumCactus() {
-        Circle leaf1 = new Circle(0, 0, 15);
-        Circle leaf2 = new Circle(0, -30, 15);
-        Circle leaf3 = new Circle(0, -60, 15);
-        
-        leaf1.setFill(Color.GREEN);
-        leaf2.setFill(Color.GREEN);
-        leaf3.setFill(Color.GREEN);
-        
-        leaf1.setStroke(Color.DARKGREEN);
-        leaf2.setStroke(Color.DARKGREEN);
-        leaf3.setStroke(Color.DARKGREEN);
-        
-        obstacleGroup.getChildren().addAll(leaf1, leaf2, leaf3);
-    }
-    
-    /**
-     * Create a large (wider) cactus
-     */
-    private void createLargeCactus() {
-        Circle leaf1 = new Circle(0, 0, 20);
-        Circle leaf2 = new Circle(30, 0, 20);
-        Circle leaf3 = new Circle(60, 0, 20);
-        
-        leaf1.setFill(Color.GREEN);
-        leaf2.setFill(Color.GREEN);
-        leaf3.setFill(Color.GREEN);
-        
-        leaf1.setStroke(Color.DARKGREEN);
-        leaf2.setStroke(Color.DARKGREEN);
-        leaf3.setStroke(Color.DARKGREEN);
-        
-        obstacleGroup.getChildren().addAll(leaf1, leaf2, leaf3);
-    }
-    
+
     /**
      * Update bush position
      * @param delta The speed modifier
      */
     @Override
     public void update(double delta) {
-        // Move bush left
         x -= (speed * delta);
         obstacleGroup.setLayoutX(x);
     }
-    
-    
+
     /**
      * Set the speed of the bush
      * @param speed The new speed value

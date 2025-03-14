@@ -3,6 +3,7 @@ import javafx.animation.Timeline;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Polygon;
+import javafx.scene.shape.Ellipse;
 import javafx.util.Duration;
 
 /**
@@ -15,6 +16,11 @@ public class Bird extends Obstacle {
     private Timeline flapAnimation;
     private double speed;
     private double altitude;
+
+    private Timeline floatAnimation;
+    private Polygon wing;
+    private Polygon beak;
+    private double originalY;
     
     /**
      * Constructor for the Bird class
@@ -40,6 +46,9 @@ public class Bird extends Obstacle {
         initialize();
         setX(startX);
         setY(startY);
+        buildBird();
+        setupFlapAnimation();
+        setupFloatAnimation();
     }
     
     /**
@@ -55,57 +64,118 @@ public class Bird extends Obstacle {
      * Build the bird graphics
      */
     private void buildBird() {
-        // Clear any existing children
-        obstacleGroup.getChildren().clear();
+         // Тело птицы - более детализированное, используем эллипс
+        Ellipse body = new Ellipse(0, 0, 15, 10);
+        body.setFill(Color.ROYALBLUE);
         
-        // Create bird body
-        Circle body = new Circle(0, 0, 10);
-        body.setFill(Color.DODGERBLUE);
+        // Голова птицы
+        Circle head = new Circle(-12, -5, 8);
+        head.setFill(Color.ROYALBLUE);
         
-        // Create bird wing
-        Polygon wing = new Polygon(
-            -5.0, 0.0,
-            -10.0, -5.0,
-            -2.0, -3.0
-        );
-        wing.setFill(Color.WHITE);
-        
-        // Create bird beak
-        Polygon beak = new Polygon(
-            10.0, 0.0,
-            15.0, 0.0,
-            10.0, 5.0
+        // Клюв
+        beak = new Polygon(
+            -22.0, -7.0,
+            -15.0, -3.0,
+            -15.0, -7.0
         );
         beak.setFill(Color.ORANGE);
         
-        // Add all parts to the group
-        obstacleGroup.getChildren().addAll(body, wing, beak);
+        // Глаз
+        Circle eye = new Circle(-15, -7, 2);
+        eye.setFill(Color.WHITE);
         
-        // Set default position (will be overridden when placed in game)
+        Circle pupil = new Circle(-15, -7, 1);
+        pupil.setFill(Color.BLACK);
+        
+        // Крыло
+        wing = new Polygon(
+            -5.0, 0.0,
+            5.0, 0.0,
+            10.0, -10.0,
+            0.0, -5.0
+        );
+        wing.setFill(Color.CORNFLOWERBLUE);
+        
+        // Хвост
+        Polygon tail = new Polygon(
+            15.0, 0.0,
+            25.0, -5.0,
+            25.0, 5.0
+        );
+        tail.setFill(Color.CORNFLOWERBLUE);
+        
+        // Лапки
+        Polygon leftLeg = new Polygon(
+            -5.0, 10.0,
+            -5.0, 15.0,
+            -10.0, 15.0
+        );
+        leftLeg.setFill(Color.ORANGE);
+        
+        Polygon rightLeg = new Polygon(
+            5.0, 10.0,
+            5.0, 15.0,
+            0.0, 15.0
+        );
+        rightLeg.setFill(Color.ORANGE);
+        
+        obstacleGroup.getChildren().addAll(
+            body, head, beak, eye, pupil, wing, tail, leftLeg, rightLeg
+        );
+        
+        // Начальное положение
         this.x = 600;
         this.y = 150;
+        originalY = y;
         obstacleGroup.setLayoutX(x);
         obstacleGroup.setLayoutY(y);
     }
     
-    /**
-     * Setup wing flapping animation
-     */
     private void setupFlapAnimation() {
-        // Only proceed if we have a wing
-        if (obstacleGroup.getChildren().size() < 2) return;
-        
-        // Get the wing and set up animation
-        Polygon wing = (Polygon) obstacleGroup.getChildren().get(1);
-        
-        // Create timeline for wing flapping
         flapAnimation = new Timeline(
-            new KeyFrame(Duration.ZERO, e -> wing.setRotate(0)),
-            new KeyFrame(Duration.millis(100), e -> wing.setRotate(20)),
-            new KeyFrame(Duration.millis(200), e -> wing.setRotate(0))
+            new KeyFrame(Duration.ZERO, e -> {
+                wing.setRotate(0);
+                wing.setLayoutY(0);
+            }),
+            new KeyFrame(Duration.seconds(0.25), e -> {
+                wing.setRotate(-30);
+                wing.setLayoutY(-5);
+            }),
+            new KeyFrame(Duration.seconds(0.5), e -> {
+                wing.setRotate(0);
+                wing.setLayoutY(0);
+            })
         );
         flapAnimation.setCycleCount(Timeline.INDEFINITE);
         flapAnimation.play();
+        
+        // Добавляем анимацию открывания клюва
+        Timeline beakAnimation = new Timeline(
+            new KeyFrame(Duration.ZERO, e -> beak.setRotate(0)),
+            new KeyFrame(Duration.seconds(1), e -> beak.setRotate(15)),
+            new KeyFrame(Duration.seconds(1.2), e -> beak.setRotate(0))
+        );
+        beakAnimation.setCycleCount(Timeline.INDEFINITE);
+        beakAnimation.play();
+    }
+    
+    /**
+     * Настраивает анимацию плавного вертикального движения
+     */
+    private void setupFloatAnimation() {
+        floatAnimation = new Timeline(
+            new KeyFrame(Duration.ZERO, e -> {
+                setY(originalY);
+            }),
+            new KeyFrame(Duration.seconds(1), e -> {
+                setY(originalY - 15);
+            }),
+            new KeyFrame(Duration.seconds(2), e -> {
+                setY(originalY);
+            })
+        );
+        floatAnimation.setCycleCount(Timeline.INDEFINITE);
+        floatAnimation.play();
     }
     
     /**

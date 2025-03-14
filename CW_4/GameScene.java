@@ -2,6 +2,7 @@ import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
+import javafx.scene.Group;
 
 /**
  * Scene class for the Dinosaur Game
@@ -72,6 +73,8 @@ public class GameScene extends Application {
             mediumCactus.getNode(),
             multipleCacti.getNode()
         );
+        
+        bird.update(30.6);
     }
     
     /**
