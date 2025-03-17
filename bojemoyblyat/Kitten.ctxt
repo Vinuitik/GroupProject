@@ -1,0 +1,13 @@
+#BlueJ class context
+comment0.target=Kitten
+comment1.params=
+comment1.target=Kitten()
+comment2.params=
+comment2.target=void\ buildKitten()
+comment3.params=
+comment3.target=void\ setupRunningAnimation()
+comment4.params=
+comment4.target=javafx.scene.Group\ getNode()
+comment5.params=newState
+comment5.target=void\ setState(Kitten.State)
+numComments=6
