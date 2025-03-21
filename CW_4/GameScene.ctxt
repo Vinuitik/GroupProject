@@ -1,0 +1,14 @@
+#BlueJ class context
+comment0.target=GameScene
+comment0.text=\n\ Scene\ class\ for\ the\ Dinosaur\ Game\n\ Manages\ the\ game\ background,\ including\ ground,\ clouds,\ and\ game\ elements\n\ \n\ @author\ Dima,\ Daria,\ David\n\ @version\ 1.0\n
+comment1.params=
+comment1.target=GameScene()
+comment2.params=primaryStage
+comment2.target=void\ start(javafx.stage.Stage)
+comment3.params=
+comment3.target=void\ initializeGameElements()
+comment3.text=\n\ Initialize\ game\ elements\ and\ add\ them\ to\ the\ scene\n
+comment4.params=args
+comment4.target=void\ main(java.lang.String[])
+comment4.text=\n\ Main\ method\ to\ launch\ the\ application\n\ \n\ @param\ args\ Command\ line\ arguments\n
+numComments=5
