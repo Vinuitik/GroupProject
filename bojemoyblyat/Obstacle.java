@@ -1,6 +1,12 @@
 import javafx.geometry.Point2D;
 import javafx.scene.Group;
 import javafx.geometry.BoundingBox;
+import javafx.animation.TranslateTransition;
+import javafx.scene.Group;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
+import javafx.util.Duration;
+import java.util.Random;
 
 /**
  * Abstract class for game obstacles
@@ -15,14 +21,32 @@ public abstract class Obstacle {
     // Width and height for collision detection
     protected double width;
     protected double height;
+    protected double score;
     // JavaFX Group for rendering the obstacle
     protected Group obstacleGroup;
+    
+    protected Random random;
+    
+    protected TranslateTransition moveAnimation;
     
     /**
      * Constructor for the Obstacle class
      */
-    public Obstacle() {
+    public Obstacle(double score) {
         obstacleGroup = new Group();
+        this.score = score;
+        random = new Random();
+    }
+    
+    /**
+     * Настраивает анимацию плавного вертикального движения
+     */
+    protected void setupMoveAnimation() {
+        moveAnimation = new TranslateTransition(Duration.seconds( Math.max( 400 / score , 0.6 ) ), obstacleGroup);
+        moveAnimation.setFromX(x);
+        moveAnimation.setToX(-150-x); // Move off screen
+        moveAnimation.setCycleCount(1); // Stops after moving off screen
+        moveAnimation.play();
     }
     
     /**
@@ -33,14 +57,6 @@ public abstract class Obstacle {
         return obstacleGroup;
     }
     
-    /**
-     * Update the obstacle position
-     * @param delta The amount to move the obstacle
-     */
-    public void update(double delta) {
-        x -= delta; 
-        obstacleGroup.setLayoutX(x);
-    }
     
     // Getters and setters
     public double getX() {

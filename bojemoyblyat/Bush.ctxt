@@ -1,22 +1,15 @@
 #BlueJ class context
 comment0.target=Bush
-comment0.text=\n\ Bush/Cactus\ obstacle\ class\ for\ the\ Dinosaur\ Game\n\n\ @author\ Dima,\ Daria,\ David\n\ @version\ 1.0\n
-comment1.params=
-comment1.target=Bush()
-comment1.text=\n\ Constructor\ for\ the\ Bush\ class\n
-comment2.params=startX\ startY\ type
-comment2.target=Bush(double,\ double,\ int)
-comment2.text=\n\ Constructor\ with\ custom\ position\ and\ type\n\ @param\ startX\ Starting\ X\ position\n\ @param\ startY\ Starting\ Y\ position\n\ @param\ type\ The\ type\ of\ cactus\ (0\=small,\ 1\=medium,\ 2\=large)\n
+comment0.text=\r\n\ Bush/Cactus\ obstacle\ class\ for\ the\ Dinosaur\ Game\r\n\r\n\ @author\ Dima,\ Daria,\ David\r\n\ @version\ 1.0\r\n
+comment1.params=startX\ startY\ score
+comment1.target=Bush(double,\ double,\ double)
+comment1.text=\r\n\ Constructor\ with\ custom\ position\ and\ type\r\n\ @param\ startX\ Starting\ X\ position\r\n\ @param\ startY\ Starting\ Y\ position\r\n\ @param\ type\ The\ type\ of\ cactus\ (0\=small,\ 1\=medium,\ 2\=large)\r\n
+comment2.params=
+comment2.target=int\ randomType()
 comment3.params=
 comment3.target=void\ initialize()
-comment3.text=\n\ Initialize\ the\ bush/cactus\n
+comment3.text=\r\n\ Initialize\ the\ bush/cactus\r\n
 comment4.params=
 comment4.target=void\ buildBush()
-comment4.text=\n\ Build\ the\ bush/cactus\ graphics\ based\ on\ type\n
-comment5.params=delta
-comment5.target=void\ update(double)
-comment5.text=\n\ Update\ bush\ position\n\ @param\ delta\ The\ speed\ modifier\n
-comment6.params=speed
-comment6.target=void\ setSpeed(double)
-comment6.text=\n\ Set\ the\ speed\ of\ the\ bush\n\ @param\ speed\ The\ new\ speed\ value\n
-numComments=7
+comment4.text=\r\n\ Build\ the\ bush/cactus\ graphics\ based\ on\ type\r\n
+numComments=5
