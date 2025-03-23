@@ -12,54 +12,30 @@ import javafx.scene.shape.Rectangle;
  * @version 1.0
  */
 public class Bushes extends Obstacle {
-    private double speed;
     private int numberOfBushes;
-    private Random random;
     private static final Color[] FLOWER_COLORS = {
         Color.PINK, Color.YELLOW, Color.LIGHTSKYBLUE, 
         Color.LIGHTCORAL, Color.LAVENDER, Color.WHITE
     };
     
-    /**
-     * Constructor for the Bushes class
-     */
-    public Bushes() {
-        super();
-        random = new Random();
-        this.numberOfBushes = random.nextBoolean() ? 2 : 3;
-        this.speed = 3.0;
-        initialize();
-    }
     
     /**
      * Constructor with custom position
      * @param startX Starting X position
      * @param startY Starting Y position
      */
-    public Bushes(double startX, double startY) {
-        super();
-        random = new Random();
-        this.numberOfBushes = random.nextBoolean() ? 2 : 3;
-        this.speed = 3.0;
-        initialize();
-        setX(startX);
-        setY(startY);
-    }
     
-    /**
-     * Constructor with custom position and number of bushes
-     * @param startX Starting X position
-     * @param startY Starting Y position
-     * @param numberOfBushes Number of bushes to create
-     */
-    public Bushes(double startX, double startY, int numberOfBushes) {
-        super();
-        this.numberOfBushes = numberOfBushes;
-        random = new Random();
-        this.speed = 3.0;
-        initialize();
+
+    public Bushes(double startX, double startY, double score) {
+        super(score);
+        this.numberOfBushes = randomBushCount();
         setX(startX);
         setY(startY);
+        initialize();
+    }
+
+    private static int randomBushCount() {
+        return new Random().nextBoolean() ? 2 : 3;
     }
     
     /**
@@ -68,6 +44,7 @@ public class Bushes extends Obstacle {
     @Override
     public void initialize() {
         buildBushes();
+        setupMoveAnimation();
     }
     
     /**
@@ -109,19 +86,8 @@ public class Bushes extends Obstacle {
             addFlowers(offsetX, scale);
 
             // Offset for next bush
-            offsetX += 50 * scale;
+            offsetX += 35 * scale;
         }
-
-        // Set obstacle properties using Obstacle methods
-        setX(600);  // Starting X position (off-screen)
-        setY(250);  // Ground level
-
-        this.width = offsetX;  // Total width of all bushes
-        this.height = 40;      // Approximate height
-
-        // Apply position to JavaFX node
-        obstacleGroup.setLayoutX(getX());
-        obstacleGroup.setLayoutY(getY());
     }
 
     /**
@@ -147,12 +113,11 @@ public class Bushes extends Obstacle {
      */
     private void addFlowers(double offsetX, double scale) {
         int flowers = random.nextInt(4) + 1; // 1-4 flowers
-        Random random1 = new Random();
         
         for (int i = 0; i < flowers; i++) {
-            double fx = offsetX + (random1.nextDouble() * 40 - 20) * scale;
-            double fy = (random1.nextDouble() * 20 - 25) * scale;
-            double fr = (3 + random1.nextDouble() * 3) * scale;
+            double fx = offsetX + (random.nextDouble() * 40 - 20) * scale;
+            double fy = (random.nextDouble() * 20 - 25) * scale;
+            double fr = (3 + random.nextDouble() * 3) * scale;
             
             // Choose a random flower color from the list
             Color flowerColor = FLOWER_COLORS[random.nextInt(FLOWER_COLORS.length)];
@@ -168,25 +133,9 @@ public class Bushes extends Obstacle {
         }
     }
 
-    /**
-     * Update bushes position
-     * @param delta The speed modifier
-     */
-    @Override
-    public void update(double delta) {
-        // Move bushes to the left
-        x -= (speed * delta);
-        obstacleGroup.setLayoutX(x);
-    }
     
-    /**
-     * Set the speed of the bushes
-     * @param speed The new speed value
-     */
-    public void setSpeed(double speed) {
-        this.speed = speed;
-    }
-
+    
+    
     /**
      * Get the number of bushes
      * @return Number of bushes

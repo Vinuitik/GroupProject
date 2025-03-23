@@ -3,6 +3,8 @@ import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import javafx.scene.Group;
+import java.util.ArrayList;
+import java.util.stream.Collectors;
 
 /**
  * Scene class for the Dinosaur Game
@@ -26,6 +28,8 @@ public class GameScene extends Application {
     private Bush mediumCactus;
     private Bushes multipleCacti;
     
+    ObstacleFactory factory;
+    
     public GameScene() {
         // Constructor remains empty as setup is done in start() method
     }
@@ -35,11 +39,12 @@ public class GameScene extends Application {
         // Initialize window
         primaryStage.setTitle("Dinosaur Game");
         
+        factory = ObstacleFactory.getInstance();
+        
         // Create a simple pane
         root = new Pane();
         
-        // Initialize and add game elements
-        initializeGameElements();
+        
         
         // Create scene and add to stage
         Scene scene = new Scene(root, WIDTH, HEIGHT);
@@ -48,33 +53,32 @@ public class GameScene extends Application {
         
         // Show the stage
         primaryStage.show();
+        
+        // Initialize and add game elements
+        initializeGameElements();
     }
     
     /**
      * Initialize game elements and add them to the scene
      */
     private void initializeGameElements() {
-        // Create a bird obstacle
-        bird = new Bird(700, 150);
+       
         
-        // Create a small cactus
-        smallCactus = new Bush(500, 250, 0);
+        new Thread(() -> {
+            while(true) {
+                javafx.application.Platform.runLater(() -> 
+                    root.getChildren().add(factory.generateRandomObstacle(500, 200, 60).getNode())
+                );
+                try {
+                    Thread.sleep(2700);
+                } catch (InterruptedException ie) {
+                    ie.printStackTrace();
+                }
+            }
+        }).start();
         
-        // Create a medium (taller) cactus
-        mediumCactus = new Bush(300, 250, 1);
         
-        // Create a set of multiple cacti
-        multipleCacti = new Bushes(100, 250, 3);
         
-        // Add all obstacles to the root pane
-        root.getChildren().addAll(
-            bird.getNode(),
-            smallCactus.getNode(),
-            mediumCactus.getNode(),
-            multipleCacti.getNode()
-        );
-        
-        bird.update(30.6);
     }
     
     /**

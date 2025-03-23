@@ -4,6 +4,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Polygon;
 import javafx.scene.shape.Ellipse;
+import javafx.animation.TranslateTransition;
 import javafx.util.Duration;
 
 /**
@@ -14,7 +15,7 @@ import javafx.util.Duration;
  */
 public class Bird extends Obstacle {
     private Timeline flapAnimation;
-    private double speed;
+    
     private double altitude;
 
     private Timeline floatAnimation;
@@ -22,33 +23,21 @@ public class Bird extends Obstacle {
     private Polygon beak;
     private double originalY;
     
-    /**
-     * Constructor for the Bird class
-     */
-    public Bird() {
-        super();
-        this.width = 20;
-        this.height = 20;
-        this.speed = 3.0;
-        initialize();
-    }
+    
     
     /**
      * Constructor with custom position
      * @param startX Starting X position
      * @param startY Starting Y position
      */
-    public Bird(double startX, double startY) {
-        super();
+    public Bird(double startX, double startY, double score) {
+        super(score);
         this.width = 20;
         this.height = 20;
-        this.speed = 3.0;
-        initialize();
         setX(startX);
         setY(startY);
-        buildBird();
-        setupFlapAnimation();
-        setupFloatAnimation();
+        originalY=startY;
+        initialize();
     }
     
     /**
@@ -58,6 +47,8 @@ public class Bird extends Obstacle {
     public void initialize() {
         buildBird();
         setupFlapAnimation();
+        setupFloatAnimation();
+        setupMoveAnimation();
     }
     
     /**
@@ -122,13 +113,6 @@ public class Bird extends Obstacle {
         obstacleGroup.getChildren().addAll(
             body, head, beak, eye, pupil, wing, tail, leftLeg, rightLeg
         );
-        
-        // Начальное положение
-        this.x = 600;
-        this.y = 150;
-        originalY = y;
-        obstacleGroup.setLayoutX(x);
-        obstacleGroup.setLayoutY(y);
     }
     
     private void setupFlapAnimation() {
@@ -178,20 +162,9 @@ public class Bird extends Obstacle {
         floatAnimation.play();
     }
     
-    /**
-     * Update bird position
-     * @param delta The speed modifier
-     */
-    @Override
-    public void update(double delta) {
-        // Move bird left
-        x -= (speed * delta);
-        obstacleGroup.setLayoutX(x);
-        
-        // Optional: Add slight vertical movement for more natural flight
-        // y += Math.sin(x * 0.05) * 0.5;
-        // obstacleGroup.setLayoutY(y);
-    }
+    
+    
+    
     
     
     /**

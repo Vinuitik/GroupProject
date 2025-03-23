@@ -2,6 +2,7 @@ import javafx.scene.Group;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
+import java.util.Random;
 
 /**
  * Bush/Cactus obstacle class for the Dinosaur Game
@@ -10,18 +11,7 @@ import javafx.scene.shape.Rectangle;
  * @version 1.0
  */
 public class Bush extends Obstacle {
-    private double speed;
     private int type; // 0 = small, 1 = medium, 2 = large
-
-    /**
-     * Constructor for the Bush class
-     */
-    public Bush() {
-        super();
-        this.type = 0; // Default to small cactus
-        this.speed = 3.0;
-        initialize();
-    }
 
     /**
      * Constructor with custom position and type
@@ -29,13 +19,16 @@ public class Bush extends Obstacle {
      * @param startY Starting Y position
      * @param type The type of cactus (0=small, 1=medium, 2=large)
      */
-    public Bush(double startX, double startY, int type) {
-        super();
-        this.type = type;
-        this.speed = 3.0;
-        initialize();
+    public Bush(double startX, double startY, double score) {
+        super(score);
+        this.type = randomType();
         setX(startX);
         setY(startY);
+        initialize();
+    }
+    
+    private static int randomType() {
+        return new Random().nextInt(4); // Generates 0, 1, 2, or 3
     }
 
     /**
@@ -44,6 +37,7 @@ public class Bush extends Obstacle {
     @Override
     public void initialize() {
         buildBush();
+        setupMoveAnimation();
     }
 
     /**
@@ -104,29 +98,7 @@ public class Bush extends Obstacle {
             flower1, flower2, flower3,
             flowerCenter1, flowerCenter2, flowerCenter3
         );
-
-        // Initial position
-        this.x = 100; // off-screen right
-        this.y = 250; // ground level
-        obstacleGroup.setLayoutX(x);
-        obstacleGroup.setLayoutY(y);
     }
 
-    /**
-     * Update bush position
-     * @param delta The speed modifier
-     */
-    @Override
-    public void update(double delta) {
-        x -= (speed * delta);
-        obstacleGroup.setLayoutX(x);
-    }
-
-    /**
-     * Set the speed of the bush
-     * @param speed The new speed value
-     */
-    public void setSpeed(double speed) {
-        this.speed = speed;
-    }
+    
 }
