@@ -6,6 +6,7 @@ import javafx.scene.shape.Polygon;
 import javafx.scene.shape.Ellipse;
 import javafx.animation.TranslateTransition;
 import javafx.util.Duration;
+import javafx.scene.layout.Pane;
 
 /**
  * Bird obstacle class
@@ -15,10 +16,12 @@ import javafx.util.Duration;
  */
 public class Bird extends Obstacle {
     private Timeline flapAnimation;
+    private Timeline beakAnimation;
+    private Timeline floatAnimation;
     
     private double altitude;
 
-    private Timeline floatAnimation;
+    
     private Polygon wing;
     private Polygon beak;
     private double originalY;
@@ -30,8 +33,8 @@ public class Bird extends Obstacle {
      * @param startX Starting X position
      * @param startY Starting Y position
      */
-    public Bird(double startX, double startY, double score) {
-        super(score);
+    public Bird(double startX, double startY, double finalX, double score) {
+        super(score,finalX);
         this.width = 20;
         this.height = 20;
         setX(startX);
@@ -46,9 +49,40 @@ public class Bird extends Obstacle {
     @Override
     public void initialize() {
         buildBird();
+        setupMoveAnimation();
+    }
+    
+    @Override
+    protected void setupMoveAnimation() {
+        moveAnimation = new TranslateTransition(Duration.seconds(  nummerator / (score+futureOffset) + minTime  ), obstacleGroup);
+        moveAnimation.setFromX(x);
+        moveAnimation.setToX(finalX-x); // Move off screen
+        moveAnimation.setCycleCount(1); // Stops after moving off screen
+        
         setupFlapAnimation();
         setupFloatAnimation();
-        setupMoveAnimation();
+        
+        moveAnimation.setOnFinished(event -> {
+            if(flapAnimation!=null){
+                flapAnimation.stop();
+            }
+            if(floatAnimation!=null){
+                floatAnimation.stop();
+            }
+            if(beakAnimation!=null){
+                beakAnimation.stop();
+            }
+            if (obstacleGroup.getParent() != null) {
+                ((Pane) obstacleGroup.getParent()).getChildren().remove(obstacleGroup);
+            }
+            obstacleGroup = null; // Allow garbage collection
+            flapAnimation = null;
+            moveAnimation = null;
+            beakAnimation = null;
+            floatAnimation = null;
+        });
+        
+        moveAnimation.play();
     }
     
     /**
@@ -134,7 +168,7 @@ public class Bird extends Obstacle {
         flapAnimation.play();
         
         // Добавляем анимацию открывания клюва
-        Timeline beakAnimation = new Timeline(
+        beakAnimation = new Timeline(
             new KeyFrame(Duration.ZERO, e -> beak.setRotate(0)),
             new KeyFrame(Duration.seconds(1), e -> beak.setRotate(15)),
             new KeyFrame(Duration.seconds(1.2), e -> beak.setRotate(0))
@@ -162,17 +196,4 @@ public class Bird extends Obstacle {
         floatAnimation.play();
     }
     
-    
-    
-    
-    
-    
-    /**
-     * Stop animations when bird is no longer needed
-     */
-    public void cleanup() {
-        if (flapAnimation != null) {
-            flapAnimation.stop();
-        }
-    }
 }

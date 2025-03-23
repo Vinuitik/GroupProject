@@ -7,6 +7,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.util.Duration;
 import java.util.Random;
+import javafx.scene.layout.Pane;
 
 /**
  * Abstract class for game obstacles
@@ -15,6 +16,13 @@ import java.util.Random;
  * @version 1.0
  */
 public abstract class Obstacle {
+    
+    protected static final int futureOffset = 110;
+    protected static final double minTime = 3;
+    protected static final int nummerator = 320; 
+    
+    protected double finalX;
+    
     // Position coordinates
     protected double x;
     protected double y;
@@ -32,20 +40,31 @@ public abstract class Obstacle {
     /**
      * Constructor for the Obstacle class
      */
-    public Obstacle(double score) {
+    public Obstacle(double score, double finalX) {
         obstacleGroup = new Group();
         this.score = score;
         random = new Random();
+        
+        this.finalX = finalX;
     }
     
     /**
      * Настраивает анимацию плавного вертикального движения
      */
+    
     protected void setupMoveAnimation() {
-        moveAnimation = new TranslateTransition(Duration.seconds( Math.max( 400 / score , 0.6 ) ), obstacleGroup);
+        moveAnimation = new TranslateTransition(Duration.seconds(  nummerator / (score+futureOffset) + minTime  ), obstacleGroup);
         moveAnimation.setFromX(x);
-        moveAnimation.setToX(-150-x); // Move off screen
+        moveAnimation.setToX(finalX-x); // Move off screen
         moveAnimation.setCycleCount(1); // Stops after moving off screen
+        
+        moveAnimation.setOnFinished(event -> {
+            if (obstacleGroup.getParent() != null) {
+                ((Pane) obstacleGroup.getParent()).getChildren().remove(obstacleGroup);
+            }
+            obstacleGroup = null; // Allow garbage collection
+        });
+        
         moveAnimation.play();
     }
     

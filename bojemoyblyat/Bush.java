@@ -19,8 +19,8 @@ public class Bush extends Obstacle {
      * @param startY Starting Y position
      * @param type The type of cactus (0=small, 1=medium, 2=large)
      */
-    public Bush(double startX, double startY, double score) {
-        super(score);
+    public Bush(double startX, double startY,double finalX, double score) {
+        super(score,finalX);
         this.type = randomType();
         setX(startX);
         setY(startY);

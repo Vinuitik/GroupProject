@@ -2,38 +2,34 @@ import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.scene.Group;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Circle;
-import javafx.scene.shape.Polygon;
-import javafx.scene.shape.Rectangle;
-import javafx.scene.shape.Ellipse;
+import javafx.scene.shape.*;
 import javafx.util.Duration;
+import javafx.animation.TranslateTransition;
+import javafx.scene.Node;
+import javafx.animation.KeyValue;
+import javafx.animation.Interpolator;
 
-/**
- * Класс Kitten представляет игрового персонажа-котенка.
- * Котенок может бегать, прыгать и пригибаться.
- */
-public class Kitten extends Character {
-    
-    // Перечисление состояний котёнка
+
+
+public class Kitten extends Charachter {
+
     public enum State { RUNNING, JUMPING, CROUCHING, GAME_OVER }
-    
+
     private Group kittenGroup;
     private State currentState;
     private Timeline runningAnimation;
     private Timeline jumpAnimation;
     
-    // Компоненты тела котенка для анимации
+    // Components for kitten's body
     private Rectangle frontLeg;
     private Rectangle backLeg;
-    private Group bodyGroup; // Группа для всего тела кроме ног
+    private Group bodyGroup; // Group for everything except legs
     
-    // Физические параметры для прыжка
-    private double jumpHeight = 100;
+    // Jump physics
+    private double jumpHeight = 120;
     private double initialY;
-    private double gravity = 9.8;
     private boolean isJumping = false;
     
-    // Для обнаружения столкновений
     private Rectangle hitbox;
     
     public Kitten(double x, double y) {
@@ -48,216 +44,164 @@ public class Kitten extends Character {
         kittenGroup.setLayoutY(y);
     }
     
-    /**
-     * Создает дизайн котенка со всеми деталями
-     */
+    // Creates a refined kitten design with smoother proportions and better visuals
     private void buildKitten() {
         bodyGroup = new Group();
-        
-        // Тело котёнка - более округлое, используем эллипс
-        Ellipse body = new Ellipse(25, 15, 30, 15);
+
+        // More rounded kitten body with a bigger shape for cuteness
+        Ellipse body = new Ellipse(30, 20, 40, 20);
         body.setFill(Color.SANDYBROWN);
-        
-        // Голова котёнка
-        Circle head = new Circle(40, -5, 20);
+
+        // Head with a more proportional design
+        Circle head = new Circle(45, -10, 22);
         head.setFill(Color.SANDYBROWN);
-        
-        // Ушки - более детализированные
-        Polygon earLeft = new Polygon(
-            30.0, -25.0,
-            25.0, -5.0,
-            35.0, -5.0
-        );
+
+        // Ears with better detail and tilt for a cute look
+        Polygon earLeft = new Polygon(35.0, -25.0, 30.0, -5.0, 40.0, -5.0);
         earLeft.setFill(Color.SIENNA);
-        
-        Polygon earRight = new Polygon(
-            50.0, -25.0,
-            45.0, -5.0,
-            55.0, -5.0
-        );
+        Polygon earRight = new Polygon(55.0, -25.0, 50.0, -5.0, 60.0, -5.0);
         earRight.setFill(Color.SIENNA);
         
-        // Внутренние части ушей
-        Polygon earLeftInner = new Polygon(
-            30.0, -22.0,
-            27.0, -8.0,
-            33.0, -8.0
-        );
-        earLeftInner.setFill(Color.ROSYBROWN);
-        
-        Polygon earRightInner = new Polygon(
-            50.0, -22.0,
-            47.0, -8.0,
-            53.0, -8.0
-        );
-        earRightInner.setFill(Color.ROSYBROWN);
-        
-        // Глаза - большие выразительные
-        Circle eyeLeft = new Circle(35, -5, 4);
+        // Eyes to make the kitten expressive
+        Circle eyeLeft = new Circle(40, -10, 5);
         eyeLeft.setFill(Color.WHITE);
-        Circle eyeRight = new Circle(45, -5, 4);
+        Circle eyeRight = new Circle(50, -10, 5);
         eyeRight.setFill(Color.WHITE);
         
-        // Зрачки
-        Circle pupilLeft = new Circle(36, -5, 2);
+        // Pupils for a more emotional look
+        Circle pupilLeft = new Circle(41, -10, 2);
         pupilLeft.setFill(Color.BLACK);
-        Circle pupilRight = new Circle(46, -5, 2);
+        Circle pupilRight = new Circle(51, -10, 2);
         pupilRight.setFill(Color.BLACK);
         
-        // Нос
-        Polygon nose = new Polygon(
-            40.0, 0.0,
-            37.0, 3.0,
-            43.0, 3.0
-        );
+        // Nose and whiskers for added cuteness
+        Polygon nose = new Polygon(45.0, 0.0, 42.0, 3.0, 48.0, 3.0);
         nose.setFill(Color.PINK);
         
-        // Усы
-        Rectangle whiskerLeft1 = new Rectangle(20, 0, 15, 1);
-        Rectangle whiskerLeft2 = new Rectangle(20, 3, 15, 1);
-        Rectangle whiskerRight1 = new Rectangle(45, 0, 15, 1);
-        Rectangle whiskerRight2 = new Rectangle(45, 3, 15, 1);
+        Rectangle whiskerLeft1 = new Rectangle(30, 0, 15, 1);
+        Rectangle whiskerLeft2 = new Rectangle(30, 4, 15, 1);
+        Rectangle whiskerRight1 = new Rectangle(50, 0, 15, 1);
+        Rectangle whiskerRight2 = new Rectangle(50, 4, 15, 1);
         
-        // Хвост
-        Ellipse tail = new Ellipse(-5, 10, 10, 5);
+        // Tail with a more dynamic look
+        Ellipse tail = new Ellipse(-5, 15, 12, 7);
         tail.setFill(Color.SANDYBROWN);
         tail.setRotate(45);
-        
-        // Лапки
-        frontLeg = new Rectangle(35, 30, 8, 20);
-        frontLeg.setArcWidth(8);
-        frontLeg.setArcHeight(8);
+
+        // Front and back legs with better animation possibilities
+        frontLeg = new Rectangle(35, 30, 10, 20);
+        frontLeg.setArcWidth(10);
+        frontLeg.setArcHeight(10);
         frontLeg.setFill(Color.SANDYBROWN);
-        
-        backLeg = new Rectangle(5, 30, 8, 20);
-        backLeg.setArcWidth(8);
-        backLeg.setArcHeight(8);
+
+        backLeg = new Rectangle(15, 30, 10, 20);
+        backLeg.setArcWidth(10);
+        backLeg.setArcHeight(10);
         backLeg.setFill(Color.SANDYBROWN);
-        
-        // Добавляем все элементы в группу тела
-        bodyGroup.getChildren().addAll(
-            tail, body, head, 
-            earLeft, earRight, earLeftInner, earRightInner,
-            eyeLeft, eyeRight, pupilLeft, pupilRight,
-            nose, whiskerLeft1, whiskerLeft2, whiskerRight1, whiskerRight2
-        );
-        
-        // Добавляем тело и лапки в основную группу
+
+        // Add all the components to the body group
+        bodyGroup.getChildren().addAll(body, head, earLeft, earRight, eyeLeft, eyeRight, pupilLeft, pupilRight, nose, whiskerLeft1, whiskerLeft2, whiskerRight1, whiskerRight2, tail);
         kittenGroup.getChildren().addAll(bodyGroup, frontLeg, backLeg);
-        
-        // Создаем хитбокс для обнаружения столкновений
+
+        // Hitbox for collision detection
         hitbox = new Rectangle(0, -20, 50, 50);
         hitbox.setFill(Color.TRANSPARENT);
         hitbox.setStroke(Color.TRANSPARENT);
-        
-        // Настраиваем начальное положение
+
         kittenGroup.setLayoutX(50);
         kittenGroup.setLayoutY(250);
     }
     
-    /**
-     * Настраивает анимацию бега
-     */
+    // Setting up the smooth running animation with leg movement
     private void setupRunningAnimation() {
         runningAnimation = new Timeline(
             new KeyFrame(Duration.ZERO, e -> {
                 frontLeg.setRotate(15);
                 backLeg.setRotate(-15);
             }),
-            new KeyFrame(Duration.seconds(0.15), e -> {
+            new KeyFrame(Duration.seconds(0.2), e -> {
                 frontLeg.setRotate(-15);
                 backLeg.setRotate(15);
             }),
-            new KeyFrame(Duration.seconds(0.3), e -> {
+            new KeyFrame(Duration.seconds(0.4), e -> {
                 frontLeg.setRotate(15);
                 backLeg.setRotate(-15);
             })
         );
         runningAnimation.setCycleCount(Timeline.INDEFINITE);
     }
-    
-    /**
-     * Настраивает анимацию прыжка
-     */
+
+    // Smoother jump animation using ease-in and ease-out for the vertical movement
     private void setupJumpAnimation() {
-        jumpAnimation = new Timeline(
-            new KeyFrame(Duration.ZERO, e -> {
-                isJumping = true;
-                frontLeg.setRotate(0);
-                backLeg.setRotate(0);
-            }),
-            new KeyFrame(Duration.seconds(0.5), e -> {
-                kittenGroup.setLayoutY(initialY - jumpHeight);
-            }),
-            new KeyFrame(Duration.seconds(1.0), e -> {
-                kittenGroup.setLayoutY(initialY);
-                isJumping = false;
-                if (currentState == State.JUMPING) {
-                    setState(State.RUNNING);
-                }
-            })
-        );
-        jumpAnimation.setCycleCount(1);
-    }
+        KeyValue startValue = new KeyValue(kittenGroup.translateYProperty(), 0, Interpolator.LINEAR);
+        KeyValue peakValue = new KeyValue(kittenGroup.translateYProperty(), -jumpHeight, Interpolator.LINEAR);
+        KeyValue endValue = new KeyValue(kittenGroup.translateYProperty(), 0, Interpolator.LINEAR);
     
-    /**
-     * Выполняет прыжок, если котенок не в прыжке
-     */
+        KeyFrame keyFrame1 = new KeyFrame(Duration.ZERO, startValue);
+        KeyFrame keyFrame2 = new KeyFrame(Duration.seconds(1.4), peakValue);
+        KeyFrame keyFrame3 = new KeyFrame(Duration.seconds(1.9), endValue);
+    
+        jumpAnimation = new Timeline(keyFrame1, keyFrame2, keyFrame3);
+        jumpAnimation.setCycleCount(1);
+    
+        // Optionally, set an onFinished event to handle post-jump actions
+        jumpAnimation.setOnFinished(e -> {
+            isJumping = false;
+            if (currentState == State.JUMPING) {
+                setState(State.RUNNING);
+            }
+        });
+    }
+
+
+
+
+
+    // Performs the jump if the kitten is not already jumping
     public void jump() {
         if (!isJumping && currentState != State.GAME_OVER) {
             setState(State.JUMPING);
             jumpAnimation.playFromStart();
         }
     }
-    
-    /**
-     * Переключает котенка в режим пригибания
-     */
+
+    // Switches to crouch state and modifies the kitten's posture
     public void crouch() {
         if (!isJumping && currentState != State.GAME_OVER) {
             setState(State.CROUCHING);
-            // Изменяем положение тела для пригибания
             bodyGroup.setScaleY(0.5);
             bodyGroup.setLayoutY(15);
             frontLeg.setScaleY(0.5);
             frontLeg.setLayoutY(15);
             backLeg.setScaleY(0.5);
             backLeg.setLayoutY(15);
-            // Обновляем хитбокс
             hitbox.setHeight(25);
             hitbox.setY(-10);
         }
     }
-    
-    /**
-     * Возвращает котенка в нормальное положение после пригибания
-     */
+
+    // Returns the kitten to standing position
     public void standUp() {
         if (currentState == State.CROUCHING) {
             setState(State.RUNNING);
-            // Восстанавливаем нормальное положение
             bodyGroup.setScaleY(1);
             bodyGroup.setLayoutY(0);
             frontLeg.setScaleY(1);
             frontLeg.setLayoutY(0);
             backLeg.setScaleY(1);
             backLeg.setLayoutY(0);
-            // Обновляем хитбокс
             hitbox.setHeight(50);
             hitbox.setY(-20);
         }
     }
-    
-    /**
-     * Переключает состояние котенка
-     */
+
+    // Sets the kitten's state
     public void setState(State newState) {
         if (currentState == newState) return;
-        
-        // Сохраняем предыдущее состояние для возврата при необходимости
+
         State previousState = currentState;
         currentState = newState;
-        
+
         switch (newState) {
             case RUNNING:
                 runningAnimation.play();
@@ -271,31 +215,23 @@ public class Kitten extends Character {
             case GAME_OVER:
                 runningAnimation.stop();
                 jumpAnimation.stop();
-                // Анимация проигрыша - котенок падает
-                bodyGroup.setRotate(90);
+                bodyGroup.setRotate(90);  // Kitten falls down in game over
                 frontLeg.setRotate(0);
                 backLeg.setRotate(0);
                 break;
         }
     }
-    
-    /**
-     * Возвращает текущее состояние котенка
-     */
+
     public State getState() {
         return currentState;
     }
-    
-    /**
-     * Возвращает Node для добавления на сцену
-     */
+
+    // Returns the kitten as a Group for rendering
     public Group getNode() {
         return kittenGroup;
     }
-    
-    /**
-     * Возвращает хитбокс для обнаружения столкновений
-     */
+
+    // Returns the hitbox for collision detection
     public Rectangle getHitbox() {
         Rectangle actualHitbox = new Rectangle(
             kittenGroup.getLayoutX() + hitbox.getX(),

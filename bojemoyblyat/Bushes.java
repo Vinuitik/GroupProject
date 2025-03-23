@@ -26,8 +26,8 @@ public class Bushes extends Obstacle {
      */
     
 
-    public Bushes(double startX, double startY, double score) {
-        super(score);
+    public Bushes(double startX, double startY, double finalX, double score) {
+        super(score, finalX);
         this.numberOfBushes = randomBushCount();
         setX(startX);
         setY(startY);
