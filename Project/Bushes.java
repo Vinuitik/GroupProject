@@ -3,6 +3,7 @@ import javafx.scene.shape.Circle;
 import java.util.Random;
 import javafx.scene.Group;
 import javafx.scene.shape.Rectangle;
+import java.util.List;
 
 
 /**
@@ -26,8 +27,8 @@ public class Bushes extends Obstacle {
      */
     
 
-    public Bushes(double startX, double startY, double finalX, double score) {
-        super(score, finalX);
+    public Bushes(double startX, double startY, double finalX, double score, List<Obstacle> obstacles) {
+        super(score, finalX,obstacles);
         this.numberOfBushes = randomBushCount();
         setX(startX);
         setY(startY);

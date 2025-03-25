@@ -3,6 +3,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
 import java.util.Random;
+import java.util.List;
 
 /**
  * Bush/Cactus obstacle class for the Dinosaur Game
@@ -19,8 +20,8 @@ public class Bush extends Obstacle {
      * @param startY Starting Y position
      * @param type The type of cactus (0=small, 1=medium, 2=large)
      */
-    public Bush(double startX, double startY,double finalX, double score) {
-        super(score,finalX);
+    public Bush(double startX, double startY,double finalX, double score, List<Obstacle> obstacles) {
+        super(score,finalX, obstacles);
         this.type = randomType();
         setX(startX);
         setY(startY);

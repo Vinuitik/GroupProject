@@ -1,14 +1,16 @@
 #BlueJ class context
 comment0.target=ObstacleFactory
 comment0.text=\r\n\ Write\ a\ description\ of\ class\ ObstacleFactory\ here.\r\n\r\n\ @author\ (your\ name)\r\n\ @version\ (a\ version\ number\ or\ a\ date)\r\n
-comment1.params=
-comment1.target=ObstacleFactory()
-comment2.params=
-comment2.target=ObstacleFactory\ getInstance()
-comment3.params=x\ y\ finalX\ score\ obstacleType
-comment3.target=Obstacle\ generateObstacle(int,\ int,\ int,\ double,\ java.lang.String)
-comment4.params=x\ y\ finalX\ speed
-comment4.target=Obstacle\ generateRandomObstacle(int,\ int,\ int,\ double)
-comment5.params=
-comment5.target=int\ randomType()
-numComments=6
+comment1.params=list
+comment1.target=ObstacleFactory(java.util.List)
+comment2.params=list
+comment2.target=ObstacleFactory\ getInstance(java.util.List)
+comment3.params=
+comment3.target=ObstacleFactory\ getInstance()
+comment4.params=x\ y\ finalX\ score\ obstacleType
+comment4.target=Obstacle\ generateObstacle(int,\ int,\ int,\ double,\ java.lang.String)
+comment5.params=x\ y\ finalX\ speed
+comment5.target=Obstacle\ generateRandomObstacle(int,\ int,\ int,\ double)
+comment6.params=
+comment6.target=int\ randomType()
+numComments=7

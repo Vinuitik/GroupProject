@@ -26,8 +26,9 @@ public class Kitten extends Charachter {
     private Group bodyGroup; // Group for everything except legs
     
     // Jump physics
-    private double jumpHeight = 120;
+    private double jumpHeight = 170;
     private double initialY;
+    private double initialX;
     private boolean isJumping = false;
     
     private Rectangle hitbox;
@@ -38,7 +39,8 @@ public class Kitten extends Charachter {
         buildKitten();
         setupRunningAnimation();
         setupJumpAnimation();
-        initialY = kittenGroup.getLayoutY();
+        initialY = y;
+        initialX = x;
         
         kittenGroup.setLayoutX(x);
         kittenGroup.setLayoutY(y);
@@ -138,8 +140,8 @@ public class Kitten extends Charachter {
         KeyValue endValue = new KeyValue(kittenGroup.translateYProperty(), 0, Interpolator.LINEAR);
     
         KeyFrame keyFrame1 = new KeyFrame(Duration.ZERO, startValue);
-        KeyFrame keyFrame2 = new KeyFrame(Duration.seconds(1.4), peakValue);
-        KeyFrame keyFrame3 = new KeyFrame(Duration.seconds(1.9), endValue);
+        KeyFrame keyFrame2 = new KeyFrame(Duration.seconds(0.4), peakValue);
+        KeyFrame keyFrame3 = new KeyFrame(Duration.seconds(0.8), endValue);
     
         jumpAnimation = new Timeline(keyFrame1, keyFrame2, keyFrame3);
         jumpAnimation.setCycleCount(1);
@@ -160,6 +162,7 @@ public class Kitten extends Charachter {
     // Performs the jump if the kitten is not already jumping
     public void jump() {
         if (!isJumping && currentState != State.GAME_OVER) {
+            isJumping = true;
             setState(State.JUMPING);
             jumpAnimation.playFromStart();
         }
@@ -240,5 +243,54 @@ public class Kitten extends Charachter {
             hitbox.getHeight()
         );
         return actualHitbox;
+    }
+    
+    public void stopAnimation(){
+        if(jumpAnimation!=null){
+            jumpAnimation.stop();
+        }
+        if(runningAnimation!=null){
+            runningAnimation.stop();
+        }
+        isJumping=true;
+    }
+    
+    public void reset(){
+        kittenGroup.setLayoutX(initialX);
+        kittenGroup.setLayoutY(initialY);
+        kittenGroup.setTranslateX(0);
+        kittenGroup.setTranslateY(0); // Reset the jump translation
+        isJumping = false;
+        runningAnimation.play();
+    }
+    
+    public boolean check(Obstacle obstacle){
+        if(obstacle == null){
+            return false;
+        }
+        Group group1 = getNode();
+        Group group2 = obstacle.getNode();
+        
+        if (!group1.getBoundsInParent().intersects(group2.getBoundsInParent())) {
+            return false; // No collision
+        }
+        if(obstacle instanceof Bird){
+            return true;
+        }
+        //return true;
+        
+        for (Node nodeA : group1.getChildren()) {
+            for (Node nodeB : group2.getChildren()) {
+                if (nodeA instanceof Shape && nodeB instanceof Shape) {
+                    Shape shapeA = (Shape) nodeA;
+                    Shape shapeB = (Shape) nodeB;
+                    Shape intersection = Shape.intersect(shapeA, shapeB);
+                    if (!intersection.getBoundsInLocal().isEmpty()) {
+                        return true; // Collision detected
+                    }
+                }
+            }
+        }
+        return false;
     }
 }

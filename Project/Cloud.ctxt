@@ -1,0 +1,23 @@
+#BlueJ class context
+comment0.target=Cloud
+comment0.text=\r\n\ Cloud\ class\ for\ background\ decoration\ in\ the\ game\r\n\ Creates\ minimalistic\ cloud\ shapes\ that\ slowly\ move\ across\ the\ sky\r\n\ \r\n\ @author\ Dima,\ Daria,\ David\r\n\ @version\ 1.0\r\n
+comment1.params=startX\ startY\ width\ parentPane\ clouds
+comment1.target=Cloud(double,\ double,\ double,\ javafx.scene.layout.Pane,\ java.util.List)
+comment1.text=\r\n\ Constructor\ for\ Cloud\ objects\r\n\ \r\n\ @param\ startX\ starting\ X\ position\r\n\ @param\ startY\ starting\ Y\ position\r\n\ @param\ width\ width\ of\ the\ game\ window\ (for\ animation)\r\n\ @param\ parentPane\ the\ parent\ pane\ to\ add/remove\ cloud\ from\r\n
+comment2.params=
+comment2.target=void\ buildCloud()
+comment2.text=\r\n\ Build\ the\ cloud\ graphics\r\n
+comment3.params=
+comment3.target=void\ delete()
+comment4.params=
+comment4.target=void\ setupMoveAnimation()
+comment4.text=\r\n\ Setup\ the\ cloud\ movement\ animation\r\n
+comment5.params=
+comment5.target=void\ createNewCloud()
+comment5.text=\r\n\ Create\ a\ new\ cloud\ when\ this\ one\ disappears\ off\ screen\r\n
+comment6.params=
+comment6.target=void\ stopAnimation()
+comment7.params=
+comment7.target=javafx.scene.Group\ getNode()
+comment7.text=\r\n\ Get\ the\ cloud\ node\ for\ adding\ to\ the\ scene\r\n\ \r\n\ @return\ Group\ containing\ cloud\ graphics\r\n
+numComments=8

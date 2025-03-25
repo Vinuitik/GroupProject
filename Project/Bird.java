@@ -7,6 +7,7 @@ import javafx.scene.shape.Ellipse;
 import javafx.animation.TranslateTransition;
 import javafx.util.Duration;
 import javafx.scene.layout.Pane;
+import java.util.List;
 
 /**
  * Bird obstacle class
@@ -33,8 +34,8 @@ public class Bird extends Obstacle {
      * @param startX Starting X position
      * @param startY Starting Y position
      */
-    public Bird(double startX, double startY, double finalX, double score) {
-        super(score,finalX);
+    public Bird(double startX, double startY, double finalX, double score, List<Obstacle> obstacles) {
+        super(score,finalX,obstacles);
         this.width = 20;
         this.height = 20;
         setX(startX);
@@ -75,6 +76,7 @@ public class Bird extends Obstacle {
             if (obstacleGroup.getParent() != null) {
                 ((Pane) obstacleGroup.getParent()).getChildren().remove(obstacleGroup);
             }
+            obstaclesList.remove(this);
             obstacleGroup = null; // Allow garbage collection
             flapAnimation = null;
             moveAnimation = null;
@@ -194,6 +196,22 @@ public class Bird extends Obstacle {
         );
         floatAnimation.setCycleCount(Timeline.INDEFINITE);
         floatAnimation.play();
+    }
+    
+    @Override
+    public void stopAnimation(){
+        if (moveAnimation != null) {
+            moveAnimation.stop();
+        }
+        if (floatAnimation != null) {
+            floatAnimation.stop();
+        }
+        if (beakAnimation != null) {
+            beakAnimation.stop();
+        }
+        if (flapAnimation != null) {
+            flapAnimation.stop();
+        }
     }
     
 }
