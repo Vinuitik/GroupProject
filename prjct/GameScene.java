@@ -20,6 +20,12 @@ import javafx.scene.paint.Stop;
 import java.util.List;
 import javafx.animation.AnimationTimer;
 import java.util.Iterator;
+import javafx.scene.control.Button;
+import javafx.scene.layout.VBox;
+import javafx.scene.layout.HBox;
+import javafx.scene.text.Font;
+import javafx.geometry.Pos;
+import javafx.scene.effect.DropShadow;
 
 
 /**
@@ -39,9 +45,9 @@ public class GameScene extends Application {
     private List<Obstacle> obstacles;
     private List<Cloud> clouds;
     
-    private final int spawnObstacleX = 500;
+    private final int spawnObstacleX = 550;
     private final int spawnCharacterX = 50;
-    private final int spawnY = 280;
+    private final int spawnY = 270;
     private final int finalX = -200;
     private AtomicInteger score;
     private AtomicBoolean crushed;
@@ -49,6 +55,7 @@ public class GameScene extends Application {
     private AnimationTimer collisionTimer;
     
     private Label scoreLabel;
+    private Pane gameOverPane;
     
     // Root pane
     private Pane root;
@@ -65,9 +72,6 @@ public class GameScene extends Application {
     public void start(Stage primaryStage) {
         // Initialize window
         primaryStage.setTitle("Dinosaur Game");
-        
-        //obstacles = Collections.synchronizedList(new ArrayList<>());
-        //clouds = Collections.synchronizedList(new ArrayList<>());
         
         obstacles = new ArrayList<>();
         clouds = new ArrayList<>();
@@ -99,6 +103,9 @@ public class GameScene extends Application {
         scoreLabel.setLayoutY(20);
         root.getChildren().add(scoreLabel); // Add label to root
         
+        // Create game over pane
+        createGameOverPane();
+        
         kitten = new Kitten(spawnCharacterX,spawnY);
         root.getChildren().add(kitten.getNode());
 
@@ -109,11 +116,13 @@ public class GameScene extends Application {
             if (event.getCode() == KeyCode.SPACE || event.getCode() == KeyCode.UP) {
                 kitten.jump();  // Trigger jump when spacebar or up arrow is pressed
             }
-            if (event.getCode() == KeyCode.F) {
+            /*if (event.getCode() == KeyCode.F) {
                 stopALL();
-            }
+                showGameOver();
+            }*/
             if (event.getCode() == KeyCode.R) {
                 reset();
+                hideGameOver();
             }
         });
         
@@ -122,8 +131,6 @@ public class GameScene extends Application {
 
         // Show the stage
         primaryStage.show();
-        
-        
 
         score = new AtomicInteger(0);
         crushed = new AtomicBoolean(false);
@@ -132,7 +139,96 @@ public class GameScene extends Application {
         initializeGameElements();
         startCountingScore();
         checkCollisions();
+    }
+    
+    /**
+     * Creates the game over screen with retry and quit buttons
+     */
+    private void createGameOverPane() {
+        gameOverPane = new Pane();
+        gameOverPane.setPrefSize(WIDTH, HEIGHT);
+        gameOverPane.setStyle("-fx-background-color: rgba(0, 0, 0, 0.5);"); // Semi-transparent background
+        gameOverPane.setVisible(false);
         
+        // Game Over message
+        Label gameOverLabel = new Label("GAME OVER");
+        gameOverLabel.setFont(new Font("Arial Bold", 48));
+        gameOverLabel.setTextFill(Color.WHITE);
+        gameOverLabel.setLayoutX(WIDTH / 2 - 150);
+        gameOverLabel.setLayoutY(HEIGHT / 2 - 100);
+        
+        // Create buttons
+        Button retryButton = createButton("Retry", 120, 50);
+        retryButton.setOnAction(e -> {
+            reset();
+            hideGameOver();
+        });
+        
+        Button quitButton = createButton("Quit", 120, 50);
+        quitButton.setOnAction(e -> System.exit(0));
+        
+        // Create horizontal box for buttons
+        HBox buttonBox = new HBox(20); // 20 pixels spacing
+        buttonBox.getChildren().addAll(retryButton, quitButton);
+        buttonBox.setAlignment(Pos.CENTER);
+        buttonBox.setLayoutX(WIDTH / 2 - 130);
+        buttonBox.setLayoutY(HEIGHT / 2);
+        
+        // Add elements to game over pane
+        gameOverPane.getChildren().addAll(gameOverLabel, buttonBox);
+        
+        // Add game over pane to root
+        root.getChildren().add(gameOverPane);
+    }
+    
+    /**
+     * Helper method to create styled buttons
+     */
+    private Button createButton(String text, int width, int height) {
+        Button button = new Button(text);
+        button.setPrefSize(width, height);
+        button.setFont(new Font("Arial Bold", 16));
+        
+        // Style the button
+        button.setStyle("-fx-background-color: #3c7fb1; " +
+                         "-fx-text-fill: white; " +
+                         "-fx-background-radius: 5;");
+        
+        // Add hover effect
+        button.setOnMouseEntered(e -> 
+            button.setStyle("-fx-background-color: #5a9fd4; " +
+                           "-fx-text-fill: white; " +
+                           "-fx-background-radius: 5;"));
+        
+        button.setOnMouseExited(e -> 
+            button.setStyle("-fx-background-color: #3c7fb1; " +
+                           "-fx-text-fill: white; " +
+                           "-fx-background-radius: 5;"));
+        
+        // Add shadow effect
+        DropShadow shadow = new DropShadow();
+        shadow.setRadius(5.0);
+        shadow.setOffsetX(3.0);
+        shadow.setOffsetY(3.0);
+        shadow.setColor(Color.color(0, 0, 0, 0.3));
+        button.setEffect(shadow);
+        
+        return button;
+    }
+    
+    /**
+     * Shows the game over screen
+     */
+    private void showGameOver() {
+        gameOverPane.setVisible(true);
+        gameOverPane.toFront();
+    }
+    
+    /**
+     * Hides the game over screen
+     */
+    private void hideGameOver() {
+        gameOverPane.setVisible(false);
     }
     
     private void stopALL(){
@@ -147,9 +243,7 @@ public class GameScene extends Application {
     }
     
     private void reset(){
-        
         kitten.reset();
-        
         
         // Create a copy to avoid modification while iterating
         List<Obstacle> obstaclesCopy = new ArrayList<>(obstacles);
@@ -183,7 +277,7 @@ public class GameScene extends Application {
             double cloudX = random.nextDouble() * WIDTH;
             double cloudY = 50 + random.nextDouble() * 100; // Clouds between y=50 and y=150
             
-            Cloud cloud = new Cloud(cloudX, cloudY, WIDTH, root,clouds);
+            Cloud cloud = new Cloud(cloudX, cloudY, WIDTH, root, clouds);
             clouds.add(cloud);
             root.getChildren().add(cloud.getNode());
         }
@@ -278,6 +372,7 @@ public class GameScene extends Application {
                         Obstacle obstacle = obstacles.get(i);
                         if (kitten.check(obstacle)) {
                             stopALL();
+                            showGameOver();
                         }
                     }
                 }

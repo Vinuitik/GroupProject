@@ -271,9 +271,9 @@ public class Kitten extends Charachter {
         if (!group1.getBoundsInParent().intersects(group2.getBoundsInParent())) {
             return false; // No collision
         }
-        /*if(obstacle instanceof Bird){
+        if(obstacle instanceof Bird){
             return true;
-        }*/
+        }
         //return true;
         for (Node nodeB : group2.getChildren()) {
             if (nodeB instanceof Shape) {

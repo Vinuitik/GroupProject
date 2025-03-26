@@ -1,0 +1,24 @@
+#BlueJ class context
+comment0.target=Bushes
+comment0.text=\r\n\ Bushes\ obstacle\ class\ for\ multiple\ bushes\ in\ a\ row\r\n\r\n\ @author\ Dima,\ Daria,\ David\r\n\ @version\ 1.0\r\n
+comment1.params=startX\ startY\ finalX\ score\ obstacles
+comment1.target=Bushes(double,\ double,\ double,\ double,\ java.util.List)
+comment1.text=\r\n\ Constructor\ with\ custom\ position\r\n\ @param\ startX\ Starting\ X\ position\r\n\ @param\ startY\ Starting\ Y\ position\r\n
+comment2.params=
+comment2.target=int\ randomBushCount()
+comment3.params=
+comment3.target=void\ initialize()
+comment3.text=\r\n\ Initialize\ the\ bushes\r\n
+comment4.params=
+comment4.target=void\ buildBushes()
+comment4.text=\r\n\ Build\ multiple\ bushes\ in\ a\ row\r\n
+comment5.params=offsetX\ scale
+comment5.target=void\ addHighlights(double,\ double)
+comment5.text=\r\n\ Add\ highlights\ to\ the\ bushes\r\n
+comment6.params=offsetX\ scale
+comment6.target=void\ addFlowers(double,\ double)
+comment6.text=\r\n\ Add\ flowers\ to\ the\ bushes\r\n
+comment7.params=
+comment7.target=int\ getNumberOfBushes()
+comment7.text=\r\n\ Get\ the\ number\ of\ bushes\r\n\ @return\ Number\ of\ bushes\r\n
+numComments=8

@@ -9,6 +9,7 @@ import javafx.util.Duration;
 import java.util.Random;
 import javafx.scene.layout.Pane;
 import java.util.List;
+import javafx.scene.shape.*;
 
 /**
  * Abstract class for game obstacles
@@ -21,8 +22,6 @@ public abstract class Obstacle {
     protected static final int futureOffset = 120;
     protected static final double minTime = 2.5;
     protected static final int nummerator = 330; 
-    
-    
     
     protected double finalX;
     
@@ -53,7 +52,7 @@ public abstract class Obstacle {
         
         this.finalX = finalX;
     }
-    
+        
     public void delete(){
         clear();
         //obstacleGroup = null; // Allow garbage collection
