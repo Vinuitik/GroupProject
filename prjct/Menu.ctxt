@@ -1,17 +1,17 @@
 #BlueJ class context
 comment0.target=Menu
-comment0.text=\r\n\ Menu\ class\ for\ the\ Kitten\ Game\r\n\ Creates\ a\ centered\ menu\ with\ instruction\ text\ and\ top\ menu\ bar\r\n\ Uses\ a\ color\ scheme\ of\ yellow,\ pink\ and\ brown\r\n\ \r\n\ @author\ Dima,\ Daria,\ David\r\n\ @version\ 1.1\r\n
-comment1.params=
-comment1.target=Menu()
-comment1.text=\r\n\ Constructor\ for\ objects\ of\ class\ Menu\ with\ default\ frame\r\n
+comment0.text=\r\n\ Menu\ class\ for\ the\ Kitten\ Game\r\n\ Creates\ a\ centered\ menu\ with\ instruction\ text\ and\ top\ menu\ bar\r\n\ Uses\ a\ color\ scheme\ of\ yellow,\ pink\ and\ brown\r\n\ \r\n\ @author\ Dima,\ Daria,\ David\r\n\ @version\ 1.2\r\n
+comment1.params=primaryStage
+comment1.target=void\ start(javafx.stage.Stage)
 comment10.params=
 comment10.target=void\ showAboutDialog()
 comment10.text=\r\n\ Shows\ the\ About\ dialog\ with\ game\ title\ and\ authors\r\n
 comment11.params=
 comment11.target=void\ showHelpDialog()
+comment11.text=\r\n\ Shows\ the\ Help\ dialog\ with\ game\ controls\r\n
 comment12.params=args
 comment12.target=void\ main(java.lang.String[])
-comment12.text=\r\n\ For\ testing\ the\ menu\ independently\r\n
+comment12.text=\r\n\ Main\ method\ to\ launch\ the\ application\r\n
 comment2.params=e
 comment2.target=void\ keyPressed(java.awt.event.KeyEvent)
 comment3.params=

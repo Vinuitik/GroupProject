@@ -19,9 +19,9 @@ import javafx.scene.shape.*;
  */
 public abstract class Obstacle {
     
-    protected static final int futureOffset = 120;
+    protected static final int futureOffset = 138;
     protected static final double minTime = 2.5;
-    protected static final int nummerator = 330; 
+    protected static final int nummerator = 320; 
     
     protected double finalX;
     

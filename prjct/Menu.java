@@ -1,7 +1,8 @@
+import javafx.application.Application;
+import javafx.stage.Stage;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
-import java.lang.reflect.Method;
 
 /**
  * Menu class for the Kitten Game
@@ -9,10 +10,9 @@ import java.lang.reflect.Method;
  * Uses a color scheme of yellow, pink and brown
  * 
  * @author Dima, Daria, David
- * @version 1.1
+ * @version 1.2
  */
-public class Menu
-{
+public class Menu extends Application {
     private JFrame frame;
     private JPanel menuPanel;
     
@@ -21,11 +21,9 @@ public class Menu
     private final Color TEXT_COLOR = new Color(101, 67, 33);         // Brown
     private final Color TITLE_COLOR = new Color(255, 105, 180);      // Hot pink for title
     
-    /**
-     * Constructor for objects of class Menu with default frame
-     */
-    public Menu()
-    {
+    @Override
+    public void start(Stage primaryStage) {
+        // We'll keep the original Swing-based menu creation
         this.frame = new JFrame("Cat Game");
         this.frame.setSize(800, 600);
         this.frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -90,12 +88,14 @@ public class Menu
         // Create Help menu
         JMenu helpMenu = new JMenu("Help");
         
+        // Create Controls menu item
         JMenuItem helpItem = new JMenuItem("Controls");
         helpItem.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 showHelpDialog();
             }
         });
+        
         // Create About menu item
         JMenuItem aboutItem = new JMenuItem("About");
         aboutItem.addActionListener(new ActionListener() {
@@ -181,32 +181,26 @@ public class Menu
         try {
             // Hide this menu window
             frame.setVisible(false);
+            frame.dispose();
             
             // Launch GameScene
-            try {
-                // Get the GameScene class
-                Class<?> gameSceneClass = Class.forName("GameScene");
-                
-                // Get the main method
-                Method mainMethod = gameSceneClass.getMethod("main", String[].class);
-                
-                // Invoke main method with empty args
-                mainMethod.invoke(null, (Object) new String[0]);
-                
-                // Close this frame after successful launch
-                frame.dispose();
-                
-            } catch (Exception ex) {
-                JOptionPane.showMessageDialog(
-                    null,
-                    "Could not launch game automatically. Please right-click on GameScene and select 'Run JavaFX Application'.",
-                    "Launch Error",
-                    JOptionPane.ERROR_MESSAGE
-                );
-                frame.setVisible(true);
-            }
-            
+            javafx.application.Platform.runLater(() -> {
+                try {
+                    Stage gameStage = new Stage();
+                    GameScene gameScene = new GameScene();
+                    gameScene.start(gameStage);
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                    JOptionPane.showMessageDialog(
+                        null,
+                        "Could not launch game: " + ex.getMessage(),
+                        "Launch Error",
+                        JOptionPane.ERROR_MESSAGE
+                    );
+                }
+            });
         } catch (Exception e) {
+            e.printStackTrace();
             // If there's an error, show the menu again
             frame.setVisible(true);
         }
@@ -225,6 +219,9 @@ public class Menu
         );
     }
     
+    /**
+     * Shows the Help dialog with game controls
+     */
     private void showHelpDialog()
     {
         JOptionPane.showMessageDialog(
@@ -236,10 +233,9 @@ public class Menu
     }
     
     /**
-     * For testing the menu independently
+     * Main method to launch the application
      */
-    public static void main(String[] args)
-    {
-        new Menu();
+    public static void main(String[] args) {
+        launch(args);
     }
 }
