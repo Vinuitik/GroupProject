@@ -64,6 +64,6 @@ public class ObstacleFactory
     }
     
     private static int randomType() {
-        return new Random().nextInt(3); // Generates 0, 1, 2, or 3
+        return new Random().nextInt(3); // Generates 0, 1 or 2
     }
 }

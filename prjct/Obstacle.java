@@ -21,7 +21,7 @@ public abstract class Obstacle {
     
     protected static final int futureOffset = 138;
     protected static final double minTime = 2.5;
-    protected static final int nummerator = 320; 
+    protected static final int timeNumerator = 320; 
     
     protected double finalX;
     
@@ -68,7 +68,7 @@ public abstract class Obstacle {
      * Настраивает анимацию плавного вертикального движения
      */
     protected void setupMoveAnimation() {
-        moveAnimation = new TranslateTransition(Duration.seconds(  nummerator / (score+futureOffset) + minTime  ), obstacleGroup);
+        moveAnimation = new TranslateTransition(Duration.seconds(  timeNumerator / (score+futureOffset) + minTime  ), obstacleGroup);
         moveAnimation.setFromX(x);
         moveAnimation.setToX(finalX-x); // Move off screen
         moveAnimation.setCycleCount(1); // Stops after moving off screen

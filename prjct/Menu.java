@@ -3,6 +3,10 @@ import javafx.stage.Stage;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.awt.image.BufferedImage;
+import javax.imageio.ImageIO;
+import java.io.File;
+import java.io.IOException;
 
 /**
  * Menu class for the Kitten Game
@@ -18,7 +22,7 @@ public class Menu extends Application {
     
     // Updated color scheme with yellow, pink, and brown
     private final Color BACKGROUND_COLOR = new Color(255, 253, 208); // Light yellow
-    private final Color TEXT_COLOR = new Color(101, 67, 33);         // Brown
+    private final Color TEXT_COLOR = Color.WHITE;         // White
     private final Color TITLE_COLOR = new Color(255, 105, 180);      // Hot pink for title
     
     @Override
@@ -119,9 +123,9 @@ public class Menu extends Application {
      */
     private void createMenu()
     {
-        // Create main panel with BorderLayout
-        menuPanel = new JPanel(new BorderLayout());
-        menuPanel.setBackground(BACKGROUND_COLOR);
+        // Create main panel with background image
+        menuPanel = new BackgroundPanel();
+        menuPanel.setLayout(new BorderLayout());
         
         // Create title label with pink color
         JLabel titleLabel = new JLabel("Kitten Game", SwingConstants.CENTER);
@@ -132,7 +136,7 @@ public class Menu extends Application {
         // Create instruction text
         JPanel centerPanel = new JPanel();
         centerPanel.setLayout(new BoxLayout(centerPanel, BoxLayout.Y_AXIS));
-        centerPanel.setBackground(BACKGROUND_COLOR);
+        centerPanel.setOpaque(false); // Make panel transparent
         centerPanel.setAlignmentX(Component.CENTER_ALIGNMENT);
         
         // Create instruction label with proper alignment
@@ -162,7 +166,7 @@ public class Menu extends Application {
         
         // Create wrapper panel to center horizontally
         JPanel wrapper = new JPanel(new GridBagLayout());
-        wrapper.setBackground(BACKGROUND_COLOR);
+        wrapper.setOpaque(false);
         wrapper.add(centerPanel);
         
         // Add components to panel
@@ -171,6 +175,35 @@ public class Menu extends Application {
         
         // Set the panel as content pane
         frame.setContentPane(menuPanel);
+    }
+    
+    /**
+     * Custom JPanel with background image
+     */
+    private class BackgroundPanel extends JPanel {
+        private BufferedImage backgroundImage;
+        
+        public BackgroundPanel() {
+            try {
+                // Load the background image
+                backgroundImage = ImageIO.read(new File("background.jpg"));
+            } catch (IOException e) {
+                e.printStackTrace();
+                // Fallback to default color if image can't be loaded
+                setBackground(BACKGROUND_COLOR);
+            }
+        }
+        
+        @Override
+        protected void paintComponent(Graphics g) {
+            super.paintComponent(g);
+            if (backgroundImage != null) {
+                // Scale image to fit the panel
+                Graphics2D g2d = (Graphics2D) g.create();
+                g2d.drawImage(backgroundImage, 0, 0, getWidth(), getHeight(), this);
+                g2d.dispose();
+            }
+        }
     }
     
     /**

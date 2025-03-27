@@ -5,12 +5,12 @@
  * @author (your name)
  * @version (a version number or a date)
  */
-public class Charachter
+public class Character
 {
     /**
      * Constructor for objects of class Player
      */
-    public Charachter()
+    public Character()
     {
         
     }

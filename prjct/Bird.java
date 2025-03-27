@@ -57,7 +57,7 @@ public class Bird extends Obstacle {
     
     @Override
     protected void setupMoveAnimation() {
-        moveAnimation = new TranslateTransition(Duration.seconds(  nummerator / (score+futureOffset) + minTime  ), obstacleGroup);
+        moveAnimation = new TranslateTransition(Duration.seconds(  timeNumerator / (score+futureOffset) + minTime  ), obstacleGroup);
         moveAnimation.setFromX(x);
         moveAnimation.setToX(finalX-x); // Move off screen
         moveAnimation.setCycleCount(1); // Stops after moving off screen

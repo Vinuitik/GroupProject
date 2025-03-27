@@ -29,7 +29,7 @@ import javafx.scene.effect.DropShadow;
 
 
 /**
- * Scene class for the Dinosaur Game
+ * Scene class for the Kitten Game
  * Manages the game background, including ground, clouds, and game elements
  * 
  * @author Dima, Daria, David
@@ -52,6 +52,10 @@ public class GameScene extends Application {
     private AtomicInteger score;
     private AtomicBoolean crushed;
     
+    private final int timeNumerator = 123000;
+    private final int futureOffset = 80;
+    private final int minSpawnTime = 430;
+    
     private AnimationTimer collisionTimer;
     
     private Label scoreLabel;
@@ -71,7 +75,7 @@ public class GameScene extends Application {
     @Override
     public void start(Stage primaryStage) {
         // Initialize window
-        primaryStage.setTitle("Dinosaur Game");
+        primaryStage.setTitle("Kitten Game");
         
         obstacles = new ArrayList<>();
         clouds = new ArrayList<>();
@@ -116,10 +120,6 @@ public class GameScene extends Application {
             if (event.getCode() == KeyCode.SPACE || event.getCode() == KeyCode.UP) {
                 kitten.jump();  // Trigger jump when spacebar or up arrow is pressed
             }
-            /*if (event.getCode() == KeyCode.F) {
-                stopALL();
-                showGameOver();
-            }*/
             if (event.getCode() == KeyCode.R) {
                 reset();
                 hideGameOver();
@@ -325,7 +325,7 @@ public class GameScene extends Application {
                         root.getChildren().add(factory.generateRandomObstacle(spawnObstacleX, spawnY,finalX, scoreVal).getNode())
                     );
                     try {
-                        Thread.sleep((123000 / (scoreVal + 80)) + 430 + random.nextInt(120)+scoreVal/100  );
+                        Thread.sleep((timeNumerator / (scoreVal + futureOffset)) + minSpawnTime + random.nextInt(120)+scoreVal/100  );
                     } catch (InterruptedException ie) {
                         ie.printStackTrace();
                     }
@@ -346,7 +346,7 @@ public class GameScene extends Application {
                 if(!crushed.get()){
                     try
                     {
-                        Thread.sleep(100);
+                        Thread.sleep(100);// 0.1 second
                     }
                     catch (InterruptedException ie)
                     {

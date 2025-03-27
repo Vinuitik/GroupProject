@@ -11,7 +11,7 @@ import javafx.animation.Interpolator;
 
 
 
-public class Kitten extends Charachter {
+public class Kitten extends Character {
 
     public enum State { RUNNING, JUMPING, CROUCHING, GAME_OVER }
 

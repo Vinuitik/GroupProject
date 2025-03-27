@@ -1,6 +1,6 @@
 #BlueJ class context
 comment0.target=GameScene
-comment0.text=\r\n\ Scene\ class\ for\ the\ Dinosaur\ Game\r\n\ Manages\ the\ game\ background,\ including\ ground,\ clouds,\ and\ game\ elements\r\n\ \r\n\ @author\ Dima,\ Daria,\ David\r\n\ @version\ 1.0\r\n
+comment0.text=\r\n\ Scene\ class\ for\ the\ Kitten\ Game\r\n\ Manages\ the\ game\ background,\ including\ ground,\ clouds,\ and\ game\ elements\r\n\ \r\n\ @author\ Dima,\ Daria,\ David\r\n\ @version\ 1.0\r\n
 comment1.params=
 comment1.target=GameScene()
 comment10.params=
